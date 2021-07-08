@@ -1,10 +1,9 @@
 {
-  "name": "questionnary",
+  "name": "questionnaire",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Nikolay Ivanov <n_13@bk.ru>",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
