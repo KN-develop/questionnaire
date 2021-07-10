@@ -1,6 +1,6 @@
 /**
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
- * @interface BanCustomerData
+ * @class BanCustomerData
  */
-export interface BanCustomerData {
+export class BanCustomerData {
 }

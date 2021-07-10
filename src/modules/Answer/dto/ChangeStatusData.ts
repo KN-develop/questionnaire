@@ -1,9 +1,9 @@
 /**
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
- * @interface ChangeStatusData
+ * @class ChangeStatusData
  */
 import { StatusList } from '../../../entities/Answer';
 
-export interface ChangeStatusData {
+export class ChangeStatusData {
   status: StatusList;
 }

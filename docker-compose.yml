@@ -1,5 +1,8 @@
 version: "3.4"
 
+networks:
+  questionnaire:
+
 services:
   app:
     build:
@@ -10,3 +13,16 @@ services:
       - ./src:/app/src
     ports:
     - 3000:3000
+    networks:
+      - questionnaire
+
+  mongo:
+    image: mongo:4.4
+    restart: always
+    container_name: qr.mongo
+    env_file:
+      - .development.env
+    ports:
+    - 27020:27017
+    networks:
+      - questionnaire

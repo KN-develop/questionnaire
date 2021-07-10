@@ -11,7 +11,7 @@ import { BanCustomerData } from './dto/BanCustomerData';
 
 export class CustomerService {
   public async all(): Promise<Customer[]> {
-    throw new NotImplementedException();
+    return [];
   }
 
   public async one(data: GetOneCustomerData): Promise<Customer> {

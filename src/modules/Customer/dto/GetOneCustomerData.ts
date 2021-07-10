@@ -1,7 +1,7 @@
 /**
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
- * @interface GetOneCustomerData
+ * @class GetOneCustomerData
  */
-export interface GetOneCustomerData {
+export class GetOneCustomerData {
   id: string;
 }
