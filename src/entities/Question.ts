@@ -5,14 +5,15 @@
 import { Answer } from './Answer';
 
 export class Question {
-  private readonly _id?: string;
+  private readonly id: string | null;
   private readonly content: string;
   private readonly authorId: string;
   private readonly answers: Answer[];
 
-  constructor(content: string, authorId: string) {
+  constructor(content: string, authorId: string, id = null) {
     this.content = content;
     this.authorId = authorId;
+    this.id = id;
   }
 
   public getContent(): string {

@@ -2,10 +2,19 @@ import { Module } from '@nestjs/common';
 import { CustomerModule } from './modules/Customer/CustomerModule';
 import { QuestionModule } from './modules/Question/QuestionModule';
 import { AnswerModule } from './modules/Answer/AnswerModule';
+import { MongooseCoreModule } from '@nestjs/mongoose/dist/mongoose-core.module';
 
 @Module({
   controllers: [],
   imports: [
+    MongooseCoreModule.forRoot('mongodb://mongo:27017', {
+      useNewUrlParser: true,
+      connectTimeoutMS: 3000,
+      retryAttempts: 1,
+      user: 'nik',
+      pass: '1234',
+      authMechanism: 'DEFAULT',
+    }),
     /*ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),

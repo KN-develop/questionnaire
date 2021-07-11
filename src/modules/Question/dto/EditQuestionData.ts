@@ -1,8 +1,9 @@
 /**
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
- * @interface EditQuestionData
+ * @class EditQuestionData
  */
-export interface EditQuestionData {
+export class EditQuestionData {
   id: string;
   content: string;
+  authorId: string;
 }

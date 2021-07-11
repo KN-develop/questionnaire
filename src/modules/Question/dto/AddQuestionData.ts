@@ -1,8 +1,8 @@
 /**
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
- * @interface AddQuestionData
+ * @class AddQuestionData
  */
-export interface AddQuestionData {
+export class AddQuestionData {
   content: string;
   authorId: string;
 }
