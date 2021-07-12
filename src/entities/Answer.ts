@@ -19,9 +19,17 @@ export class Answer {
     return this.content;
   }
 
+  public getStatus() {
+    return this.status;
+  }
+
   public getRating(): number {
     return this.regards.reduce((prev, next) => {
       return prev + (next.getValue() ? 1 : -1);
     }, 1);
+  }
+
+  public getRegardsCount() {
+    return this.regards.length;
   }
 }

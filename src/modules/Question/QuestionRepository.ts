@@ -6,6 +6,7 @@ import { Question } from '../../entities/Question';
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Collection, Connection, Types } from 'mongoose';
+import { entityToDocument, documentToEntity } from '../../helpers/mongoMapper';
 
 @Injectable()
 export class QuestionRepository {
@@ -15,10 +16,7 @@ export class QuestionRepository {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   public async save(question: Question): Promise<void> {
-    const document = {
-      content: Reflect.get(question, 'content'),
-      authorId: Reflect.get(question, 'authorId'),
-    };
+    const document = this.entityToDocument(question);
     const result = await this.collection.insertOne(document);
     Reflect.set(question, 'id', result.insertedId.toString());
   }
@@ -30,14 +28,7 @@ export class QuestionRepository {
       throw new Error('Question not found');
     }
 
-    const plain = {} as Question;
-
-    Reflect.set(plain, 'id', found._id.toString());
-    Reflect.set(plain, 'content', found.content);
-    Reflect.set(plain, 'authorId', found.authorId);
-    Reflect.setPrototypeOf(plain, Question.prototype);
-
-    return plain;
+    return this.documentToEntity(found);
   }
 
   public async update(question: Question): Promise<void> {
@@ -47,10 +38,7 @@ export class QuestionRepository {
       throw new Error('Update can be only on entity with id');
     }
 
-    const document = {
-      content: Reflect.get(question, 'content'),
-      authorId: Reflect.get(question, 'authorId'),
-    };
+    const document = this.entityToDocument(question);
 
     await this.collection.updateOne(
       {
@@ -76,14 +64,18 @@ export class QuestionRepository {
 
   public async all(): Promise<Question[]> {
     const documents = await this.collection.find({}).toArray();
-    return documents.map((document) => {
-      const question = {} as Question;
-      Reflect.set(question, 'content', document.content);
-      Reflect.set(question, 'authorId', document.authorId);
-      Reflect.set(question, '_id', document._id.toString());
-      Reflect.setPrototypeOf(question, Question.prototype);
+    return documents.map((document) => this.documentToEntity(document));
+  }
 
-      return question;
-    });
+  private documentToEntity(document: any): Question {
+    return documentToEntity<Question>(
+      document,
+      ['id', 'content', 'authorId'],
+      Question,
+    );
+  }
+
+  private entityToDocument(question: Question): any {
+    return entityToDocument<Question>(question, ['content', 'authorId']);
   }
 }

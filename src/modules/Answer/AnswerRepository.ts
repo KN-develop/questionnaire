@@ -4,9 +4,17 @@
  * @class AnswerRepository
  */
 import { Answer } from '../../entities/Answer';
-import { NotImplementedException } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Collection, Connection } from 'mongoose';
+import { InjectConnection } from '@nestjs/mongoose';
 
+@Injectable()
 export class AnswerRepository {
+  private readonly collection: Collection =
+    this.connection.collection('answers');
+
+  constructor(@InjectConnection() private readonly connection: Connection) {}
+
   public async save(answer: Answer): Promise<void> {
     throw new NotImplementedException();
   }
