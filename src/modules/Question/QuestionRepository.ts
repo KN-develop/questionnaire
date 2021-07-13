@@ -7,9 +7,10 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Collection, Connection, Types } from 'mongoose';
 import { entityToDocument, documentToEntity } from '../../helpers/mongoMapper';
+import { RepositoryInterface } from '../../repository/RepositoryInterface';
 
 @Injectable()
-export class QuestionRepository {
+export class QuestionRepository implements RepositoryInterface {
   private readonly collection: Collection =
     this.connection.collection('questions');
 
@@ -64,7 +65,7 @@ export class QuestionRepository {
 
   public async all(): Promise<Question[]> {
     const documents = await this.collection.find({}).toArray();
-    return documents.map((document) => this.documentToEntity(document));
+    return documents.map(this.documentToEntity);
   }
 
   private documentToEntity(document: any): Question {

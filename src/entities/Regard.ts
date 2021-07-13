@@ -3,6 +3,7 @@
  * @class Regard
  */
 export class Regard {
+  private readonly authorId: string;
   private readonly value: boolean;
 
   public getValue() {

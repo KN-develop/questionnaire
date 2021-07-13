@@ -4,4 +4,5 @@
  */
 export interface CreateCustomerData {
   name: string;
+  login: string;
 }
