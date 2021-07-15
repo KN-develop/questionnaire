@@ -18,9 +18,9 @@ export class CustomerRepository implements RepositoryInterface {
 
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
-  public async getByLogin(login: string): Promise<Customer> {
+  public async getByPhone(phone: string): Promise<Customer> {
     const found = await this.collection.findOne({
-      login: login,
+      phone: phone,
     });
 
     if (!found) {
@@ -34,6 +34,15 @@ export class CustomerRepository implements RepositoryInterface {
     const id = Reflect.get(customer, 'id');
 
     if (id) {
+      throw new Error(
+        'Customer is already saved in db, please call update if you want is it',
+      );
+    }
+
+    const found = await this.collection.findOne({
+      phone: customer.getPhone(),
+    });
+    if (found) {
       throw new Error(
         'Customer is already saved in db, please call update if you want is it',
       );
@@ -97,7 +106,7 @@ export class CustomerRepository implements RepositoryInterface {
 
     Reflect.set(customer, 'id', document._id.toString());
     Reflect.set(customer, 'name', document.name);
-    Reflect.set(customer, 'login', document.login);
+    Reflect.set(customer, 'phone', document.phone);
     Reflect.set(
       customer,
       'contacts',
@@ -112,11 +121,11 @@ export class CustomerRepository implements RepositoryInterface {
   }
 
   private entityToDocument(customer: Customer): any {
-    const contacts = Reflect.get(customer, 'contacts');
+    const contacts = Reflect.get(customer, 'contacts') || [];
 
     return {
       name: Reflect.get(customer, 'name'),
-      login: Reflect.get(customer, 'login'),
+      phone: Reflect.get(customer, 'phone'),
       contacts: contacts.map((contact) => ({
         channel: Reflect.get(contact, 'channel'),
         value: Reflect.get(contact, 'value'),

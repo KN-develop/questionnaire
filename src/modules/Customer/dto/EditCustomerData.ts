@@ -7,6 +7,6 @@ import { CreateContactData } from '../../../dto/CreateContactData';
 export class EditCustomerData {
   id: string;
   name: string;
-  login: string;
+  phone: string;
   contacts: CreateContactData[];
 }

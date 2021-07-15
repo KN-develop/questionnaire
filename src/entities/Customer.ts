@@ -7,12 +7,12 @@ import { Contact } from './Contact';
 export class Customer {
   private readonly id: string;
   private readonly name: string;
-  private readonly login: string;
-  private readonly contacts: Contact[];
+  private readonly phone: string;
+  private readonly contacts: Contact[] = [];
 
-  constructor(name: string, login: string, id: string | null = null) {
+  constructor(name: string, phone: string, id: string | null = null) {
     this.name = name;
-    this.login = login;
+    this.phone = phone;
     this.id = id;
   }
 
@@ -20,8 +20,8 @@ export class Customer {
     return this.name;
   }
 
-  public getLogin(): string {
-    return this.login;
+  public getPhone(): string {
+    return this.phone;
   }
 
   public getContacts(): Contact[] {

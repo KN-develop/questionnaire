@@ -8,6 +8,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Collection, Connection, Types } from 'mongoose';
 import { entityToDocument, documentToEntity } from '../../helpers/mongoMapper';
 import { RepositoryInterface } from '../../repository/RepositoryInterface';
+import { Answer } from '../../entities/Answer';
 
 @Injectable()
 export class QuestionRepository implements RepositoryInterface {
@@ -24,7 +25,22 @@ export class QuestionRepository implements RepositoryInterface {
 
   public async get(id: string): Promise<Question> {
     const objectId = new Types.ObjectId(id);
-    const found = await this.collection.findOne({ _id: objectId });
+    const found = (
+      await this.collection.aggregate([
+        { $match: { _id: objectId } },
+        {
+          $lookup: {
+            from: 'answers',
+            localField: 'answers',
+            foreignField: '_id',
+            as: 'answers',
+          },
+        },
+        { $unwind: '$answers' },
+        { $limit: 1 },
+      ])
+    ).toArray()[0];
+    /*const found = await this.collection.findOne({ _id: objectId });*/
     if (!found) {
       throw new Error('Question not found');
     }
@@ -69,11 +85,25 @@ export class QuestionRepository implements RepositoryInterface {
   }
 
   private documentToEntity(document: any): Question {
-    return documentToEntity<Question>(
-      document,
-      ['id', 'content', 'authorId'],
-      Question,
-    );
+    const question = {} as Question;
+    const answers = document.answers
+      ? document.answers.map((answer) => {
+          const plain = {} as Answer;
+
+          Reflect.set(plain, 'content', answer.content);
+          Reflect.set(plain, 'status', answer.status);
+          Reflect.setPrototypeOf(plain, Answer.prototype);
+          return plain;
+        })
+      : [];
+
+    Reflect.set(question, 'id', document._id.toString());
+    Reflect.set(question, 'content', document.content);
+    Reflect.set(question, 'authorId', document.authorId);
+    Reflect.set(question, 'answers', answers);
+    Reflect.setPrototypeOf(question, Question.prototype);
+
+    return question;
   }
 
   private entityToDocument(question: Question): any {

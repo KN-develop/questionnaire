@@ -19,19 +19,31 @@ export class CustomerService {
     return await this.customerRepository.all();
   }
 
-  public async one(data: GetOneCustomerData): Promise<Customer> {
-    return await this.customerRepository.get(data.id);
+  public async oneById(id: string): Promise<Customer> {
+    return await this.customerRepository.get(id);
+  }
+
+  public async oneByPhone(phone: string): Promise<Customer> {
+    return await this.customerRepository.getByPhone(phone);
   }
 
   public async add(data: CreateCustomerData): Promise<Customer> {
-    const customer = new Customer(data.name, data.login);
+    const customer = new Customer(data.name, data.phone);
     await this.customerRepository.save(customer);
 
     return customer;
   }
 
   public async update(data: EditCustomerData): Promise<Customer> {
-    const customer = new Customer(data.name, data.login, data.id);
+    const found = await this.customerRepository.get(data.id);
+
+    if (found.getPhone() !== data.phone) {
+      throw new Error(
+        'Customer account phone is not equal, if you want to change account phone you need to use updatePhone method',
+      );
+    }
+
+    const customer = new Customer(data.name, data.phone, data.id);
 
     customer.updateAllContacts(
       data.contacts.map(
