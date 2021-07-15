@@ -5,15 +5,16 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Customer } from '../../entities/Customer';
 import { Contact } from '../../entities/Contact';
-import { GetOneCustomerData } from './dto/GetOneCustomerData';
 import { CreateCustomerData } from './dto/CreateCustomerData';
 import { EditCustomerData } from './dto/EditCustomerData';
 import { BanCustomerData } from './dto/BanCustomerData';
-import { CustomerRepository } from './CustomerRepository';
+import { CustomerRepositoryInterface } from './CustomerRepositoryInterface';
 
 @Injectable()
 export class CustomerService {
-  constructor(private readonly customerRepository: CustomerRepository) {}
+  constructor(
+    private readonly customerRepository: CustomerRepositoryInterface,
+  ) {}
 
   public async all(): Promise<Customer[]> {
     return await this.customerRepository.all();

@@ -2,15 +2,17 @@
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
  * @class QuestionService
  */
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Inject, Injectable, NotImplementedException } from '@nestjs/common';
 import { AddQuestionData } from './dto/AddQuestionData';
 import { Question } from '../../entities/Question';
 import { EditQuestionData } from './dto/EditQuestionData';
-import { QuestionRepository } from './QuestionRepository';
+import { QuestionRepositoryInterface } from './QuestionRepositoryInterface';
 
 @Injectable()
 export class QuestionService {
-  constructor(private readonly questionRepository: QuestionRepository) {}
+  constructor(
+    private readonly questionRepository: QuestionRepositoryInterface,
+  ) {}
 
   public async add(data: AddQuestionData): Promise<Question> {
     const question = new Question(data.content, data.authorId);

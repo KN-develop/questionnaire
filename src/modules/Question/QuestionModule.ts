@@ -5,10 +5,16 @@
  */
 import { Module } from '@nestjs/common';
 import { QuestionService } from './QuestionService';
-import { QuestionRepository } from './QuestionRepository';
+import { QuestionRepository } from '../../repository/QuestionRepository';
+import { QuestionRepositoryInterface } from './QuestionRepositoryInterface';
+
+const questionRepositoryProvider = {
+  provide: QuestionRepositoryInterface,
+  useClass: QuestionRepository,
+};
 
 @Module({
-  providers: [QuestionService, QuestionRepository],
+  providers: [QuestionService, questionRepositoryProvider],
   controllers: [],
 })
 export class QuestionModule {}

@@ -2,16 +2,16 @@
  * @author Nikolay Ivanov n_13@bk.ru | https://github.com/KN-develop
  * @class QuestionRepository
  */
-import { Question } from '../../entities/Question';
+import { Question } from '../entities/Question';
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Collection, Connection, Types } from 'mongoose';
-import { entityToDocument, documentToEntity } from '../../helpers/mongoMapper';
-import { RepositoryInterface } from '../../repository/RepositoryInterface';
-import { Answer } from '../../entities/Answer';
+import { entityToDocument, documentToEntity } from '../helpers/mongoMapper';
+import { Answer } from '../entities/Answer';
+import { QuestionRepositoryInterface } from '../modules/Question/QuestionRepositoryInterface';
 
 @Injectable()
-export class QuestionRepository implements RepositoryInterface {
+export class QuestionRepository implements QuestionRepositoryInterface {
   private readonly collection: Collection =
     this.connection.collection('questions');
 

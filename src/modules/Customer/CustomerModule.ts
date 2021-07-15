@@ -5,10 +5,16 @@
  */
 import { Module } from '@nestjs/common';
 import { CustomerService } from './CustomerService';
-import { CustomerRepository } from './CustomerRepository';
+import { CustomerRepository } from '../../repository/CustomerRepository';
+import { CustomerRepositoryInterface } from './CustomerRepositoryInterface';
+
+const customerRepositoryProvider = {};
 
 @Module({
-  providers: [CustomerService, CustomerRepository],
+  providers: [
+    CustomerService,
+    { provide: CustomerRepositoryInterface, useClass: CustomerRepository },
+  ],
   controllers: [],
 })
 export class CustomerModule {}

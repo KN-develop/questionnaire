@@ -7,11 +7,11 @@ import { EvaluateAnswerData } from './dto/EvaluateAnswerData';
 import { AddAnswerData } from './dto/AddAnswerData';
 import { ChangeStatusData } from './dto/ChangeStatusData';
 import { Answer } from '../../entities/Answer';
-import { AnswerRepository } from './AnswerRepository';
+import { AnswerRepositoryInterface } from './AnswerRepositoryInterface';
 
 @Injectable()
 export class AnswerService {
-  constructor(private readonly answerRepository: AnswerRepository) {}
+  constructor(private readonly answerRepository: AnswerRepositoryInterface) {}
 
   public async create(data: AddAnswerData): Promise<void> {
     throw new NotImplementedException();

@@ -6,13 +6,11 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Collection, Connection, Types } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
-import { Customer } from '../../entities/Customer';
-import { RepositoryInterface } from '../../repository/RepositoryInterface';
-import { Question } from '../../entities/Question';
-import { Contact } from '../../entities/Contact';
+import { Customer } from '../entities/Customer';
+import { Contact } from '../entities/Contact';
 
 @Injectable()
-export class CustomerRepository implements RepositoryInterface {
+export class CustomerRepository {
   private readonly collection: Collection =
     this.connection.collection('customers');
 
