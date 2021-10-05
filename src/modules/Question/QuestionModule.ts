@@ -5,7 +5,7 @@
  */
 import { Module } from '@nestjs/common';
 import { QuestionService } from './QuestionService';
-import { QuestionRepository } from '../../repository/QuestionRepository';
+import { QuestionRepository } from '../../repository/mongo/QuestionRepository';
 import { QuestionRepositoryInterface } from './QuestionRepositoryInterface';
 
 const questionRepositoryProvider = {

@@ -5,14 +5,16 @@
  */
 import { Module } from '@nestjs/common';
 import { AnswerService } from './AnswerService';
-import { AnswerRepository } from '../../repository/AnswerRepository';
+import { AnswerRepository } from '../../repository/mongo/AnswerRepository';
 import { AnswerRepositoryInterface } from './AnswerRepositoryInterface';
 
+const answerRepositoryProvider = {
+  provide: AnswerRepositoryInterface,
+  useClass: AnswerRepository,
+};
+
 @Module({
-  providers: [
-    AnswerService,
-    { provide: AnswerRepositoryInterface, useClass: AnswerRepository },
-  ],
+  providers: [AnswerService, answerRepositoryProvider],
   controllers: [],
 })
 export class AnswerModule {}
